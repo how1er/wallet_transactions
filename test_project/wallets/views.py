@@ -21,3 +21,18 @@ def wallet_list(request):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['GET', 'DELETE'])
+def wallet_detail(request, name):
+    try:
+        wallet = Wallet.objects.get(name=name)
+    except Wallet.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'GET':
+        serializer = WalletSerializer(wallet)
+        return Response(serializer.data)
+    elif request.method == 'DELETE':
+        wallet.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
