@@ -17,5 +17,10 @@ Including another URLconf
 from django.urls import path, include
 
 urlpatterns = [
-    path('', include('wallets.urls')),
+    path('wallets/', include('wallets.urls')),
+    path('users/', include('users.urls')),
+]
+
+urlpatterns += [
+    path('api-auth/', include('rest_framework.urls')),
 ]

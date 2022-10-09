@@ -1,10 +1,5 @@
-import datetime
-
 from django.db import models
 from .utils import get_random_string
-
-from django.core.exceptions import ValidationError
-from django.utils.translation import gettext_lazy as _
 
 
 # Create your models here.
@@ -22,10 +17,10 @@ class Wallet(models.Model):
     ]
 
     owner = models.ForeignKey('auth.User', related_name='wallets', on_delete=models.CASCADE)
-    name = models.CharField(max_length=8, default=get_random_string, unique=True)
+    name = models.CharField(max_length=8, default=get_random_string, unique=True, editable=False)
     type = models.CharField(max_length=10, choices=wallet_types)
-    currency = models.CharField(max_length=3)
-    balance = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    currency = models.CharField(max_length=3, choices=wallet_currencies)
+    balance = models.DecimalField(max_digits=10, decimal_places=2, default=0, editable=False)
     created_on = models.DateTimeField(auto_now_add=True)
     modified_on = models.DateTimeField(auto_now=True)
 
