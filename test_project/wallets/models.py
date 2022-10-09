@@ -21,6 +21,7 @@ class Wallet(models.Model):
         ('RUB', 'RUB')
     ]
 
+    owner = models.ForeignKey('auth.User', related_name='wallets', on_delete=models.CASCADE)
     name = models.CharField(max_length=8, default=get_random_string, unique=True)
     type = models.CharField(max_length=10, choices=wallet_types)
     currency = models.CharField(max_length=3)
