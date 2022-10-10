@@ -9,7 +9,7 @@ class TransactionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Transaction
-        fields = ['creator', 'sender', 'receiver', 'transfer_amount', 'commission', 'status', 'timestamp']
+        fields = ['id', 'creator', 'sender', 'receiver', 'transfer_amount', 'commission', 'status', 'timestamp']
 
     def validate_sender(self, name):
         try:
@@ -35,6 +35,8 @@ class TransactionSerializer(serializers.ModelSerializer):
         total_amount = amount + (amount * commission / 100)
         if sender.balance < total_amount:
             raise serializers.ValidationError("sender doesnt have enough balance")
+        if sender.name == receiver.name:
+            raise serializers.ValidationError("operation is not valid")
         sender.balance = sender.balance - total_amount
         receiver.balance = receiver.balance + amount
         sender.save()
@@ -59,4 +61,3 @@ class TransactionSerializer(serializers.ModelSerializer):
         if self.validated_data['sender'].currency != self.validated_data['receiver'].currency:
             raise serializers.ValidationError("currencies does not match")
         super().save(**kwargs)
-
