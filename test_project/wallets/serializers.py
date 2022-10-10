@@ -10,7 +10,6 @@ class WalletSerializer(serializers.ModelSerializer):
         fields = ['id', 'name', 'owner', 'type', 'currency', 'balance', 'created_on', 'modified_on']
 
     def create(self, validated_data):
-        Wallet.objects.filter(pk=8).update(balance=400)
         owner = validated_data.get('owner')
         if owner.wallets.count() == 5:
             raise serializers.ValidationError({"wallets": "user has enough wallets"})
