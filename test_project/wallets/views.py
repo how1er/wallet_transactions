@@ -9,17 +9,31 @@ from .permissions import IsOwnerOrReadOnly
 
 
 class WalletList(generics.ListCreateAPIView):
-    queryset = Wallet.objects.all()
     serializer_class = WalletSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
 
+    def get_queryset(self):
+        user = self.request.user
+        return user.wallets.all()
+
 
 class WalletDetail(generics.RetrieveDestroyAPIView):
-    queryset = Wallet.objects.all()
     serializer_class = WalletSerializer
     lookup_field = 'name'
     permission_classes = [permissions.IsAuthenticatedOrReadOnly,
                           IsOwnerOrReadOnly]
+
+    def get_queryset(self):
+        user = self.request.user
+        return user.wallets.all()
+
+
+class WalletUpdate(generics.UpdateAPIView):
+    queryset = Wallet.objects.all()
+    serializer_class = WalletSerializer
+    lookup_field = 'name'
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+

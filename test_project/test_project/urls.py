@@ -18,7 +18,7 @@ from django.urls import path, include
 
 urlpatterns = [
     path('wallets/', include('wallets.urls')),
-    path('users/', include('users.urls')),
+    path('', include('users.urls')),
 ]
 
 urlpatterns += [
