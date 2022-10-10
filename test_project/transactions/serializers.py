@@ -36,7 +36,7 @@ class TransactionSerializer(serializers.ModelSerializer):
         if sender.balance < total_amount:
             raise serializers.ValidationError("sender doesnt have enough balance")
         sender.balance = sender.balance - total_amount
-        receiver.balance = receiver.balance + total_amount
+        receiver.balance = receiver.balance + amount
         sender.save()
         receiver.save()
         return True
